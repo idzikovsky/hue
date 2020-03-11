@@ -100,6 +100,11 @@ def start_server(options):
     try:
         server.bind_server()
         drop_privileges_if_necessary(options)
+
+        if hasattr(server.socket, 'get_cipher_list'):
+          ciphers = server.socket.get_cipher_list()
+          print(_('list of enabled ciphers: {ciphers}').format(ciphers=':'.join(ciphers)))
+
         server.listen_and_loop()
     except KeyboardInterrupt:
         server.stop()
